@@ -390,6 +390,7 @@ body{background-color:#ffffff;background-image:none;color:var(--text-main);heigh
             <option value="office">Office Email Verifier</option>
             <option value="country">Country Sorter</option>
             <option value="domain">Domain Sorter</option>
+            <option value="cutter">Email Cutter</option>
           </select>
         </div>
       </div>
@@ -1093,87 +1094,79 @@ function persistSavedEmails(){
   try { localStorage.setItem(SAVED_EMAILS_KEY, JSON.stringify(savedValidEmails)); } catch(e){}
 }
 
-/* Save only the raw valid email addresses (one per line) */
+/* ============================================================
+   HELPER: Extract ALL valid emails from any tool's output text
+   Works for verifier tabs (roundcube, webmail, gsuite, office)
+   and for country/domain sorter and cutter.
+============================================================ */
+function extractAllValidEmails(outputText, toolTab){
+  if (!outputText || !outputText.trim()) return [];
+  const emails = new Set();
+
+  // Method 1: Match every occurrence of an email pattern anywhere in the text
+  const globalEmailRegex = /[a-zA-Z0-9._%+\-']+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g;
+  const allMatches = outputText.match(globalEmailRegex);
+  if (allMatches) {
+    allMatches.forEach(e => emails.add(e));
+  }
+
+  // Method 2: For verifier tabs, also parse lines starting with [VALID]
+  if (toolTab === 'roundcube' || toolTab === 'webmail' || toolTab === 'gsuite' || toolTab === 'office'){
+    outputText.split('\n').forEach(line => {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('[VALID]')) {
+        const rest = trimmed.substring(7).trim();
+        const emailMatch = rest.match(/^([^\s]+@[^\s]+)/);
+        if (emailMatch && isValidFormat(emailMatch[1])) emails.add(emailMatch[1]);
+      }
+    });
+  }
+
+  // Method 3: For country/domain sorter, each plain email line is already matched by Method 1.
+  // Method 4: For cutter, each plain email line is already matched by Method 1.
+
+  return [...emails];
+}
+
+/* ============================================================
+   SAVE VALID EMAILS — only valid emails, one per line
+============================================================ */
 function saveEmailResultsForTool(){
   if (!lastEmailOutputText || !lastEmailOutputText.trim()) {
     alert('No results to save — run a tool first.');
     return;
   }
-  // Extract only the valid email addresses from the output text
-  // The output format is: [VALID] user@email.com  — reason  | MX: ...
-  // We need to parse each line and pull out just the email address
-  const lines = lastEmailOutputText.split('\n');
-  const validEmails = [];
-  lines.forEach(line => {
-    const trimmed = line.trim();
-    if (!trimmed) return;
-    // Match lines starting with [VALID]
-    if (trimmed.startsWith('[VALID]')) {
-      // Extract the email address after [VALID]
-      const rest = trimmed.substring(7).trim(); // remove "[VALID]"
-      // Email is the first token (up to whitespace)
-      const emailMatch = rest.match(/^([^\s]+@[^\s]+)/);
-      if (emailMatch && isValidFormat(emailMatch[1])) {
-        validEmails.push(emailMatch[1]);
-      }
-    } else if (currentEmailTab === 'country' || currentEmailTab === 'domain') {
-      // For country/domain sorter, the output is grouped: "# GroupName\nemail1\nemail2"
-      // We just collect all lines that look like valid emails
-      const emailMatch = trimmed.match(/^([a-zA-Z0-9._%+\-']+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})$/);
-      if (emailMatch) {
-        validEmails.push(emailMatch[1]);
-      }
-    } else if (currentEmailTab === 'cutter') {
-      // For cutter, each line may be a plain email
-      const emailMatch = trimmed.match(/^([a-zA-Z0-9._%+\-']+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})$/);
-      if (emailMatch) {
-        validEmails.push(emailMatch[1]);
-      }
-    }
-  });
-  // Deduplicate
-  const unique = [...new Set(validEmails)];
-  if (!unique.length) {
+  const validEmails = extractAllValidEmails(lastEmailOutputText, currentEmailTab);
+  if (!validEmails.length) {
     alert('No valid emails found to save.');
     return;
   }
   // Save as raw list joined by newline, one per line
   savedValidEmails[currentEmailTab] = {
     timestamp: new Date().toISOString(),
-    raw: unique.join('\n'),
-    count: unique.length
+    raw: validEmails.join('\n'),
+    count: validEmails.length
   };
   persistSavedEmails();
-  alert(`✅ Saved ${unique.length} valid email(s) for "${currentEmailTab}".`);
+  updateSavedEmailsNavBadge();
+  alert(`✅ Saved ${validEmails.length} valid email(s) for "${currentEmailTab}".`);
 }
 
+/* ============================================================
+   COPY VALID EMAILS — only valid emails, one per line
+============================================================ */
 function copyValidEmailsForTool(){
   if (!lastEmailOutputText || !lastEmailOutputText.trim()) {
     alert('No results to copy — run a tool first.');
     return;
   }
-  // Build clean list of valid emails only
-  const lines = lastEmailOutputText.split('\n');
-  const validEmails = [];
-  lines.forEach(line => {
-    const trimmed = line.trim();
-    if (!trimmed) return;
-    if (trimmed.startsWith('[VALID]')) {
-      const rest = trimmed.substring(7).trim();
-      const emailMatch = rest.match(/^([^\s]+@[^\s]+)/);
-      if (emailMatch && isValidFormat(emailMatch[1])) validEmails.push(emailMatch[1]);
-    } else {
-      const emailMatch = trimmed.match(/^([a-zA-Z0-9._%+\-']+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})$/);
-      if (emailMatch) validEmails.push(emailMatch[1]);
-    }
-  });
-  const unique = [...new Set(validEmails)];
-  if (!unique.length) {
+  const validEmails = extractAllValidEmails(lastEmailOutputText, currentEmailTab);
+  if (!validEmails.length) {
     alert('No valid emails found to copy.');
     return;
   }
-  clipboardCopy(unique.join('\n'), null);
-  alert(`📋 Copied ${unique.length} valid email(s) to clipboard.`);
+  clipboardCopy(validEmails.join('\n'), null);
+  alert(`📋 Copied ${validEmails.length} valid email(s) to clipboard.`);
 }
 
 /* Render saved emails list in the saved-emails-overlay */
