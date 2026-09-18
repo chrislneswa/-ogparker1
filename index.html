@@ -143,6 +143,12 @@ body{background-color:#ffffff;background-image:none;color:var(--text-main);heigh
 .stat-chip b{color:#B22234;}
 .mx-link{color:#3C3B6E;text-decoration:none;font-size:11px;font-weight:600;margin-left:8px;}
 .mx-link:hover{text-decoration:underline;color:#B22234;}
+/* SAVE & COPY BUTTONS FOR EMAIL TOOLS */
+.email-save-copy{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.btn-save{background:#2e7d32;border:1px solid #fff;color:#fff;padding:8px 16px;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;}
+.btn-save:hover{background:#1b5e20;}
+.btn-copy-email{background:#3C3B6E;border:1px solid #fff;color:#fff;padding:8px 16px;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;}
+.btn-copy-email:hover{background:#2a2a5a;}
 </style>
 </head>
 <body>
@@ -359,6 +365,12 @@ body{background-color:#ffffff;background-image:none;color:var(--text-main);heigh
         <button type="button" class="btn btn-gray" onclick="downloadEmailResults()">Download .txt</button>
       </div>
 
+      <!-- SAVE & COPY BUTTONS FOR THE CURRENT TOOL -->
+      <div class="email-save-copy">
+        <button type="button" class="btn-save" onclick="saveEmailResultsForTool()">💾 Save Valid Emails</button>
+        <button type="button" class="btn-copy-email" onclick="copyValidEmailsForTool()">📋 Copy Valid Emails</button>
+      </div>
+
       <div class="progress-bar"><div class="progress-fill" id="email-progress"></div></div>
       <div id="email-stats" class="stats-row"></div>
       <div id="email-results" class="email-results"></div>
@@ -539,11 +551,51 @@ function migrateTemplateData(){
 }
 
 /* ============================================================
-   EMAIL VERIFICATION SUITE
+   EMAIL VERIFICATION SUITE — EXTENDED WITH SAVE & COPY
 ============================================================ */
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+\-']+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 let currentEmailTab = 'roundcube';
 let lastEmailOutputText = '';
+// Storage for saved valid emails per tool
+const SAVED_EMAILS_KEY = 'savedValidEmailsOGParker';
+let savedValidEmails = {};
+
+function loadSavedEmails(){
+  try {
+    const raw = localStorage.getItem(SAVED_EMAILS_KEY);
+    if (raw) savedValidEmails = JSON.parse(raw);
+  } catch(e){ savedValidEmails = {}; }
+  if (typeof savedValidEmails !== 'object') savedValidEmails = {};
+}
+function persistSavedEmails(){
+  try { localStorage.setItem(SAVED_EMAILS_KEY, JSON.stringify(savedValidEmails)); } catch(e){}
+}
+function saveEmailResultsForTool(){
+  if (!lastEmailOutputText || !lastEmailOutputText.trim()) {
+    alert('No results to save — run a tool first.');
+    return;
+  }
+  // Extract only valid email lines (those starting with [VALID] or valid-only content)
+  const lines = lastEmailOutputText.split('\n').filter(l => l.trim().length > 0);
+  // For verifier tabs, valid lines contain "[VALID]"
+  // For country/domain sorter, we save the whole output (includes groups)
+  // For cutter, we save the output list
+  savedValidEmails[currentEmailTab] = {
+    timestamp: new Date().toISOString(),
+    content: lastEmailOutputText,
+    lineCount: lines.length
+  };
+  persistSavedEmails();
+  alert(`✅ Saved ${lines.length} line(s) for "${currentEmailTab}" verifier.`);
+}
+function copyValidEmailsForTool(){
+  if (!lastEmailOutputText || !lastEmailOutputText.trim()) {
+    alert('No results to copy — run a tool first.');
+    return;
+  }
+  clipboardCopy(lastEmailOutputText, null);
+  alert('📋 Valid results copied to clipboard.');
+}
 
 const TLD_COUNTRY = {
   uk:'United Kingdom', gb:'United Kingdom', de:'Germany', fr:'France', it:'Italy', es:'Spain', nl:'Netherlands',
@@ -1804,6 +1856,8 @@ function initDashboard(){
   initNotepad();
   initUploadNotes();
   updateEmailInstructions();
+  // load saved emails for tools (optional, just to init)
+  loadSavedEmails();
 }
 
 migrateTemplateData();
@@ -1816,6 +1870,7 @@ window.addEventListener('beforeunload', () => {
   try { persistNotepadSlots(readNotepadFromDOM()); } catch(e){}
   try { persistUploadSlots(readUploadFromDOM()); } catch(e){}
   try { persistState(); } catch(e){}
+  try { persistSavedEmails(); } catch(e){}
 });
 </script>
 </body>
