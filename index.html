@@ -3,11 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@OGPARKER1 Hub Center</title>
+<title>@OGP ADMIN Hub Center</title>
 <style>
 :root{--bg-dark:#ffffff;--panel-bg:rgba(255,255,255,0.92);--panel-border:rgba(60,59,110,0.3);--text-main:#1e1e2f;--text-muted:#5a5a7a;--input-bg:#ffffff;--input-text:#3C3B6E;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
 body{background-color:#ffffff;background-image:none;color:var(--text-main);height:100vh;overflow:hidden;display:flex;}
+
+/* ============ AUTH SCREENS ============ */
+.auth-screen{position:fixed;inset:0;background:linear-gradient(135deg,#3C3B6E 0%,#B22234 100%);display:flex;align-items:center;justify-content:center;z-index:3000;padding:20px;overflow-y:auto;}
+.auth-card{background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);padding:40px;width:100%;max-width:420px;text-align:center;}
+.auth-card h1{font-size:24px;background:linear-gradient(90deg,#B22234,#3C3B6E);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;margin-bottom:6px;letter-spacing:1px;}
+.auth-card .subtitle{font-size:12px;color:#5a5a7a;text-transform:uppercase;letter-spacing:2px;margin-bottom:28px;}
+.auth-card h2{font-size:18px;color:#1e1e2f;margin-bottom:20px;font-weight:700;}
+.auth-card .form-group{margin-bottom:16px;text-align:left;}
+.auth-card .form-group label{display:block;font-size:12px;color:#3C3B6E;font-weight:600;margin-bottom:6px;}
+.auth-card .form-group input{width:100%;background:#fff;border:1px solid #B22234;color:#3C3B6E;padding:12px 14px;border-radius:6px;font-size:14px;outline:none;font-weight:600;transition:.2s;}
+.auth-card .form-group input:focus{border-color:#3C3B6E;box-shadow:0 0 0 3px rgba(60,59,110,0.15);}
+.auth-card .btn-auth{width:100%;background:#3C3B6E;color:#fff;border:none;padding:14px;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;margin-top:8px;}
+.auth-card .btn-auth:hover{background:#2a2a5a;transform:translateY(-1px);}
+.auth-card .btn-auth.secondary{background:transparent;color:#3C3B6E;border:1px solid #3C3B6E;}
+.auth-card .btn-auth.secondary:hover{background:rgba(60,59,110,0.08);}
+.auth-card .switch-link{margin-top:20px;font-size:13px;color:#5a5a7a;}
+.auth-card .switch-link a{color:#B22234;font-weight:700;cursor:pointer;text-decoration:none;}
+.auth-card .switch-link a:hover{text-decoration:underline;}
+.auth-card .error-msg{background:rgba(178,34,52,0.1);border:1px solid #B22234;color:#B22234;padding:10px;border-radius:6px;font-size:12px;margin-bottom:16px;display:none;}
+.auth-card .error-msg.show{display:block;}
+.auth-card .success-msg{background:rgba(46,125,50,0.1);border:1px solid #2e7d32;color:#2e7d32;padding:10px;border-radius:6px;font-size:12px;margin-bottom:16px;display:none;}
+.auth-card .success-msg.show{display:block;}
+.auth-badge{display:inline-block;background:#B22234;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;margin-bottom:16px;letter-spacing:1px;}
+.auth-footer{margin-top:24px;font-size:11px;color:#8a8aa0;}
+
+/* ============ SIDEBAR ============ */
 .sidebar{width:260px;background:linear-gradient(180deg,#3C3B6E 0%,#B22234 100%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-right:1px solid rgba(255,255,255,0.3);display:flex;flex-direction:column;padding:20px 0;flex-shrink:0;}
 .logo{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,0.3);margin-bottom:20px;}
 .logo h1{font-size:18px;font-weight:bold;letter-spacing:1px;color:#FFFFFF;}
@@ -18,6 +44,17 @@ body{background-color:#ffffff;background-image:none;color:var(--text-main);heigh
 .nav-item.active{background-color:#FFFFFF;color:#3C3B6E;border-radius:0 20px 20px 0;margin-right:10px;font-weight:700;}
 .nav-item svg{width:18px;height:18px;fill:currentColor;}
 .nav-badge{margin-left:auto;background:#B22234;color:#FFFFFF;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;min-width:20px;text-align:center;}
+
+/* ============ USER INFO IN SIDEBAR ============ */
+.user-info{padding:12px 20px;border-top:1px solid rgba(255,255,255,0.3);margin-top:auto;display:flex;align-items:center;gap:10px;}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.25);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+.user-details{flex:1;min-width:0;}
+.user-name{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-role{font-size:10px;color:#D6E4F0;text-transform:uppercase;letter-spacing:1px;}
+.logout-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:5px 10px;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;flex-shrink:0;}
+.logout-btn:hover{background:rgba(255,255,255,0.3);}
+
+/* ============ MAIN CONTENT ============ */
 .main-content{flex:1;overflow-y:auto;padding:24px 40px;display:flex;flex-direction:column;gap:24px;background:#f8f9fc;}
 .panel{background-color:var(--panel-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--panel-border);border-radius:8px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
 .panel-header{font-size:16px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,#B22234,#3C3B6E);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
@@ -143,98 +180,235 @@ body{background-color:#ffffff;background-image:none;color:var(--text-main);heigh
 .stat-chip b{color:#B22234;}
 .mx-link{color:#3C3B6E;text-decoration:none;font-size:11px;font-weight:600;margin-left:8px;}
 .mx-link:hover{text-decoration:underline;color:#B22234;}
-/* SAVE & COPY BUTTONS FOR EMAIL TOOLS */
 .email-save-copy{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
 .btn-save{background:#2e7d32;border:1px solid #fff;color:#fff;padding:8px 16px;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;}
 .btn-save:hover{background:#1b5e20;}
 .btn-copy-email{background:#3C3B6E;border:1px solid #fff;color:#fff;padding:8px 16px;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;}
 .btn-copy-email:hover{background:#2a2a5a;}
+
+/* ============ USER MANAGEMENT (ADMIN) ============ */
+.user-table{width:100%;border-collapse:collapse;font-size:13px;}
+.user-table th{text-align:left;padding:10px 8px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#3C3B6E;border-bottom:2px solid rgba(60,59,110,0.3);}
+.user-table td{padding:10px 8px;border-bottom:1px solid rgba(60,59,110,0.15);color:#1e1e2f;vertical-align:middle;}
+.user-table tr:hover{background:rgba(60,59,110,0.04);}
+.role-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.role-admin{background:#B22234;color:#fff;}
+.role-user{background:#3C3B6E;color:#fff;}
+.status-active{color:#2e7d32;font-weight:700;font-size:11px;}
+.status-disabled{color:#B22234;font-weight:700;font-size:11px;}
+.user-actions{display:flex;gap:4px;flex-wrap:wrap;}
+.user-actions button{padding:4px 8px;font-size:11px;border-radius:3px;border:none;cursor:pointer;font-weight:700;color:#fff;transition:.2s;}
+.user-actions .act-edit{background:#3C3B6E;}
+.user-actions .act-toggle{background:#B22234;}
+.user-actions .act-delete{background:#8f1b2a;}
+.user-actions button:hover{opacity:.8;}
+.add-user-form{background:rgba(60,59,110,0.06);border:1px solid rgba(60,59,110,0.2);border-radius:8px;padding:18px;margin-bottom:20px;}
+.add-user-form .form-grid{margin-bottom:12px;}
 </style>
 </head>
 <body>
 
-<div class="sidebar">
-  <div class="logo"><h1>@OGPARKER1</h1><span>HUB CENTER</span></div>
-  <div class="nav-menu">
-    <div class="nav-item active" onclick="showDashboardView()"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg> Dashboard</div>
-    <div class="nav-item" onclick="openUploadPanel()"><svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10zM8 10v4h2v-4h3l-4-4-4 4h3z"/></svg> Upload Zip & Folder <span class="nav-badge" id="upload-nav-badge">0</span></div>
-    <div class="nav-item" onclick="openEmailSuite()"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> Email Verification <span class="nav-badge" id="email-nav-badge">7</span></div>
-    <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> Admin Sessions</div>
-    <div class="nav-item" onclick="openExtraPanel()"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3V3zm0 6h8v12H3V9zm10 0h8v12h-8V9z"/></svg> Extra URL Storage <span class="nav-badge" id="extra-nav-badge">0</span></div>
-    <div class="nav-item" onclick="openHtmlNotesPanel()"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg> HTML Notes <span class="nav-badge" id="htmlnotes-nav-badge">0</span></div>
-    <div class="nav-item" onclick="openNotepadPanel()"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z"/></svg> Notepad <span class="nav-badge" id="notepad-nav-badge">0</span></div>
-    <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg> Settings</div>
+<!-- ============================================================
+     AUTH SCREENS (LOGIN / REGISTER)
+============================================================ -->
+<div id="auth-screen" class="auth-screen">
+  <!-- LOGIN VIEW -->
+  <div id="login-view" class="auth-card">
+    <h1>@OGPARKER1</h1>
+    <div class="subtitle">Hub Center</div>
+    <div class="auth-badge">🔐 SECURE LOGIN</div>
+    <h2>Sign In</h2>
+    <div id="login-error" class="error-msg"></div>
+    <div id="login-success" class="success-msg"></div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="login-username" placeholder="Enter your username" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="Enter your password" autocomplete="current-password">
+    </div>
+    <button class="btn-auth" onclick="handleLogin()">Sign In</button>
+    <div class="switch-link">Don't have an account? <a onclick="showRegister()">Create one</a></div>
+    <div class="auth-footer">Admin default: <b>admin</b> / <b>Illinois!@1234</b></div>
+  </div>
+
+  <!-- REGISTER VIEW -->
+  <div id="register-view" class="auth-card" style="display:none;">
+    <h1>@OGPARKER1</h1>
+    <div class="subtitle">Hub Center</div>
+    <div class="auth-badge">✨ CREATE ACCOUNT</div>
+    <h2>Register</h2>
+    <div id="register-error" class="error-msg"></div>
+    <div id="register-success" class="success-msg"></div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="reg-username" placeholder="Choose a username" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Display Name</label>
+      <input type="text" id="reg-displayname" placeholder="Your full name">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="reg-password" placeholder="Create a password (min 6 chars)" autocomplete="new-password">
+    </div>
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" id="reg-confirm" placeholder="Re-enter your password" autocomplete="new-password">
+    </div>
+    <button class="btn-auth" onclick="handleRegister()">Create Account</button>
+    <div class="switch-link">Already have an account? <a onclick="showLogin()">Sign in</a></div>
+    <div class="auth-footer">New accounts are created as regular users.</div>
   </div>
 </div>
 
-<div class="main-content" id="dashboard-view">
-  <div class="panel" id="links-panel"></div>
-
-  <div class="panel">
-    <div class="form-grid">
-      <div class="input-group"><label>Name</label><input type="text" placeholder="e.g. HR Portal"></div>
-      <div class="input-group"><label>Path</label><input type="text" placeholder="/hr/portal"></div>
+<!-- ============================================================
+     MAIN APP (HIDDEN UNTIL LOGIN)
+============================================================ -->
+<div id="app-container" style="display:none;width:100%;height:100vh;">
+  <div class="sidebar">
+    <div class="logo"><h1>@OGPARKER1</h1><span>HUB CENTER</span></div>
+    <div class="nav-menu">
+      <div class="nav-item active" onclick="showDashboardView()"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg> Dashboard</div>
+      <div class="nav-item" onclick="openUploadPanel()"><svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10zM8 10v4h2v-4h3l-4-4-4 4h3z"/></svg> Upload Zip & Folder <span class="nav-badge" id="upload-nav-badge">0</span></div>
+      <div class="nav-item" onclick="openEmailSuite()"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> Email Verification <span class="nav-badge" id="email-nav-badge">7</span></div>
+      <div class="nav-item" id="nav-user-management" onclick="openUserManagement()" style="display:none;"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg> User Management <span class="nav-badge" id="usermgmt-nav-badge">0</span></div>
+      <div class="nav-item" onclick="openExtraPanel()"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3V3zm0 6h8v12H3V9zm10 0h8v12h-8V9z"/></svg> Extra URL Storage <span class="nav-badge" id="extra-nav-badge">0</span></div>
+      <div class="nav-item" onclick="openHtmlNotesPanel()"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg> HTML Notes <span class="nav-badge" id="htmlnotes-nav-badge">0</span></div>
+      <div class="nav-item" onclick="openNotepadPanel()"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z"/></svg> Notepad <span class="nav-badge" id="notepad-nav-badge">0</span></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg> Settings</div>
     </div>
-    <button class="btn btn-blue" onclick="alert('Path Added!')">+ Add Path</button>
+    <div class="user-info">
+      <div class="user-avatar" id="user-avatar">U</div>
+      <div class="user-details">
+        <div class="user-name" id="user-name-display">User</div>
+        <div class="user-role" id="user-role-display">Member</div>
+      </div>
+      <button class="logout-btn" onclick="handleLogout()">Logout</button>
+    </div>
   </div>
 
-  <div class="panel">
-    <div class="panel-header">📁 Templates</div>
-    <div class="extra-note">
-      Templates are <strong style="color:#1e1e2f;">fully editable</strong> — click <strong>Edit</strong> on any card to change its name, path and HTML content.
-    </div>
-    <div style="margin-bottom:12px;display:flex;gap:10px;flex-wrap:wrap;">
-      <button class="btn btn-blue" onclick="addNewTemplate()">+ Add Template</button>
-      <button class="btn btn-red" onclick="resetTemplates()">Reset to Default</button>
-    </div>
-    <div class="templates-grid" id="templates-container"></div>
-  </div>
+  <div class="main-content" id="dashboard-view">
+    <div class="panel" id="links-panel"></div>
 
-  <div class="panel">
-    <div class="panel-header">⚙️ System Settings</div>
-    <div class="form-grid">
-      <div class="input-group"><label>Domain</label><input type="text" id="domain-input" value="k3devs.info"></div>
-      <div class="input-group"><label>Download Link (Continue to Download)</label><input type="text" id="download-link-input" value="https://www.google.com/"></div>
+    <div class="panel">
+      <div class="form-grid">
+        <div class="input-group"><label>Name</label><input type="text" placeholder="e.g. HR Portal"></div>
+        <div class="input-group"><label>Path</label><input type="text" placeholder="/hr/portal"></div>
+      </div>
+      <button class="btn btn-blue" onclick="alert('Path Added!')">+ Add Path</button>
     </div>
-    <button class="btn btn-blue" onclick="saveSettings()">Save</button>
-  </div>
 
-  <div class="panel">
-    <div class="panel-header">🌐 Domain &amp; DNS Records</div>
-    <div class="form-grid">
-      <div class="input-group"><label>Domain (Hosted Online)</label><input type="text" id="dns-domain" placeholder="offer3godaddee.click"></div>
-      <div class="input-group"><label>Record Type</label>
-        <select id="dns-record-type">
-          <option value="A">A — points to an IPv4 address</option>
-          <option value="CNAME">CNAME — points to a hostname</option>
-        </select>
+    <div class="panel">
+      <div class="panel-header">📁 Templates</div>
+      <div class="extra-note">
+        Templates are <strong style="color:#1e1e2f;">fully editable</strong> — click <strong>Edit</strong> on any card to change its name, path and HTML content.
+      </div>
+      <div style="margin-bottom:12px;display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-blue" onclick="addNewTemplate()">+ Add Template</button>
+        <button class="btn btn-red" onclick="resetTemplates()">Reset to Default</button>
+      </div>
+      <div class="templates-grid" id="templates-container"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">⚙️ System Settings</div>
+      <div class="form-grid">
+        <div class="input-group"><label>Domain</label><input type="text" id="domain-input" value="k3devs.info"></div>
+        <div class="input-group"><label>Download Link (Continue to Download)</label><input type="text" id="download-link-input" value="https://www.google.com/"></div>
+      </div>
+      <button class="btn btn-blue" onclick="saveSettings()">Save</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">🌐 Domain &amp; DNS Records</div>
+      <div class="form-grid">
+        <div class="input-group"><label>Domain (Hosted Online)</label><input type="text" id="dns-domain" placeholder="offer3godaddee.click"></div>
+        <div class="input-group"><label>Record Type</label>
+          <select id="dns-record-type">
+            <option value="A">A — points to an IPv4 address</option>
+            <option value="CNAME">CNAME — points to a hostname</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-group" style="justify-content:flex-start;gap:10px;margin-top:5px;">
+        <button class="btn btn-green" onclick="generateDnsRecords()">Generate DNS Records</button>
+        <button class="btn btn-gray" onclick="copyAllDnsRecords()">Copy All Records</button>
+        <button class="btn btn-blue" onclick="downloadDnsRecords()">Download .txt</button>
+      </div>
+      <div id="dns-output" style="margin-top:20px;"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">🛡️ Advanced Anti-Bot</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:15px;margin-bottom:20px;">
+        <div class="toggle-group"><input type="checkbox" checked> Crawler</div>
+        <div class="toggle-group"><input type="checkbox"> Proxy</div>
+        <div class="toggle-group"><input type="checkbox" checked> VPN</div>
+        <div class="toggle-group"><input type="checkbox" checked> Strong Bot</div>
+        <div class="toggle-group"><input type="checkbox" checked> Bogon IP</div>
+        <div class="toggle-group"><input type="checkbox" checked> Tor</div>
+        <div class="toggle-group"><input type="checkbox" checked> Visit Limit</div>
+      </div>
+      <div class="form-grid" style="margin-top:15px;">
+        <div class="input-group" style="max-width:300px;"><label>Max Visits</label><input type="number" value="20"></div>
+      </div>
+      <div style="margin-top:20px;display:flex;gap:10px;">
+        <button class="btn btn-blue" onclick="alert('Advanced Anti-Bot settings saved!')">Save</button>
+        <button class="btn btn-gray" onclick="alert('Anti-Bot settings reset!')">Reset</button>
       </div>
     </div>
-    <div class="btn-group" style="justify-content:flex-start;gap:10px;margin-top:5px;">
-      <button class="btn btn-green" onclick="generateDnsRecords()">Generate DNS Records</button>
-      <button class="btn btn-gray" onclick="copyAllDnsRecords()">Copy All Records</button>
-      <button class="btn btn-blue" onclick="downloadDnsRecords()">Download .txt</button>
-    </div>
-    <div id="dns-output" style="margin-top:20px;"></div>
   </div>
+</div>
 
-  <div class="panel">
-    <div class="panel-header">🛡️ Advanced Anti-Bot</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:15px;margin-bottom:20px;">
-      <div class="toggle-group"><input type="checkbox" checked> Crawler</div>
-      <div class="toggle-group"><input type="checkbox"> Proxy</div>
-      <div class="toggle-group"><input type="checkbox" checked> VPN</div>
-      <div class="toggle-group"><input type="checkbox" checked> Strong Bot</div>
-      <div class="toggle-group"><input type="checkbox" checked> Bogon IP</div>
-      <div class="toggle-group"><input type="checkbox" checked> Tor</div>
-      <div class="toggle-group"><input type="checkbox" checked> Visit Limit</div>
-    </div>
-    <div class="form-grid" style="margin-top:15px;">
-      <div class="input-group" style="max-width:300px;"><label>Max Visits</label><input type="number" value="20"></div>
-    </div>
-    <div style="margin-top:20px;display:flex;gap:10px;">
-      <button class="btn btn-blue" onclick="alert('Advanced Anti-Bot settings saved!')">Save</button>
-      <button class="btn btn-gray" onclick="alert('Anti-Bot settings reset!')">Reset</button>
+<!-- ============================================================
+     OVERLAYS (same as before, plus user management)
+============================================================ -->
+
+<!-- USER MANAGEMENT OVERLAY -->
+<div id="usermgmt-overlay" class="overlay-panel">
+  <div class="overlay-inner">
+    <div class="overlay-header"><h2>👥 User Management (Admin)</h2><button class="overlay-close" onclick="closeOverlay('usermgmt-overlay')">✕ Close</button></div>
+    <div class="panel">
+      <div class="panel-header">👥 User Management</div>
+      <div class="extra-note">Create and manage sub-users. Only <strong>admin</strong> can access this panel. All data is saved in your browser.</div>
+
+      <div class="add-user-form">
+        <div style="font-size:14px;font-weight:700;color:#3C3B6E;margin-bottom:12px;">➕ Add New Sub-User</div>
+        <div id="add-user-error" class="error-msg" style="display:none;background:rgba(178,34,52,0.1);border:1px solid #B22234;color:#B22234;padding:10px;border-radius:6px;font-size:12px;margin-bottom:16px;"></div>
+        <div class="form-grid">
+          <div class="input-group"><label>Username</label><input type="text" id="new-user-username" placeholder="e.g. john_doe"></div>
+          <div class="input-group"><label>Display Name</label><input type="text" id="new-user-displayname" placeholder="e.g. John Doe"></div>
+        </div>
+        <div class="form-grid">
+          <div class="input-group"><label>Password</label><input type="password" id="new-user-password" placeholder="Min 6 characters"></div>
+          <div class="input-group"><label>Role</label>
+            <select id="new-user-role">
+              <option value="user">Sub User (limited)</option>
+              <option value="admin">Admin (full access)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-blue" onclick="adminAddUser()">+ Create User</button>
+      </div>
+
+      <div style="font-size:14px;font-weight:700;color:#3C3B6E;margin-bottom:12px;">📋 Existing Users</div>
+      <div style="overflow-x:auto;border:1px solid rgba(60,59,110,0.2);border-radius:8px;padding:4px 12px;">
+        <table class="user-table">
+          <thead>
+            <tr><th>Username</th><th>Display Name</th><th>Role</th><th>Status</th><th>Created</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="user-table-body"></tbody>
+        </table>
+      </div>
+      <div class="extra-footer" style="margin-top:18px;">
+        <div class="extra-status" id="usermgmt-status">Loading…</div>
+        <div class="btn-group" style="margin:0;">
+          <button class="btn btn-gray" onclick="exportUsers()">Export Users</button>
+          <button class="btn btn-red" onclick="clearAllUsers()">Delete All Sub-Users</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -330,7 +504,7 @@ body{background-color:#ffffff;background-image:none;color:var(--text-main);heigh
       </div>
     </div>
 
-    <!-- ============ EMAIL VERIFICATION SUITE (INSIDE UPLOAD OVERLAY) ============ -->
+    <!-- ============ EMAIL VERIFICATION SUITE ============ -->
     <div class="panel" id="email-suite-panel">
       <div class="panel-header">📧 Email Verification Suite — 7 Tools (Live MX Verification — MXToolbox‑equivalent)</div>
 
@@ -365,7 +539,6 @@ body{background-color:#ffffff;background-image:none;color:var(--text-main);heigh
         <button type="button" class="btn btn-gray" onclick="downloadEmailResults()">Download .txt</button>
       </div>
 
-      <!-- SAVE & COPY BUTTONS FOR THE CURRENT TOOL -->
       <div class="email-save-copy">
         <button type="button" class="btn-save" onclick="saveEmailResultsForTool()">💾 Save Valid Emails</button>
         <button type="button" class="btn-copy-email" onclick="copyValidEmailsForTool()">📋 Copy Valid Emails</button>
@@ -375,7 +548,6 @@ body{background-color:#ffffff;background-image:none;color:var(--text-main);heigh
       <div id="email-stats" class="stats-row"></div>
       <div id="email-results" class="email-results"></div>
     </div>
-    <!-- ============ END EMAIL SUITE ============ -->
   </div>
 </div>
 
@@ -431,6 +603,318 @@ body{background-color:#ffffff;background-image:none;color:var(--text-main);heigh
 </div>
 
 <script>
+/* ============================================================
+   AUTHENTICATION SYSTEM
+============================================================ */
+const USERS_KEY = 'hubUsersOGParker';
+const SESSION_KEY = 'hubSessionOGParker';
+const ADMIN_DEFAULT = { username: 'admin', password: 'Illinois!@1234', displayName: 'Administrator', role: 'admin', createdAt: new Date().toISOString(), active: true };
+
+let users = [];
+
+function loadUsers(){
+  try {
+    const raw = localStorage.getItem(USERS_KEY);
+    if (raw) users = JSON.parse(raw);
+  } catch(e){ users = []; }
+  if (!Array.isArray(users)) users = [];
+  // Ensure admin exists
+  if (!users.find(u => u.username === 'admin')){
+    users.unshift(ADMIN_DEFAULT);
+    persistUsers();
+  }
+}
+function persistUsers(){
+  try { localStorage.setItem(USERS_KEY, JSON.stringify(users)); return true; } catch(e){ return false; }
+}
+function findUser(username){
+  return users.find(u => u.username.toLowerCase() === username.toLowerCase());
+}
+function getCurrentUser(){
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const session = JSON.parse(raw);
+    const user = findUser(session.username);
+    if (user && user.active) return user;
+    return null;
+  } catch(e){ return null; }
+}
+function setSession(user){
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify({ username: user.username, loginAt: new Date().toISOString() })); } catch(e){}
+}
+function clearSession(){
+  try { localStorage.removeItem(SESSION_KEY); } catch(e){}
+}
+
+function showLogin(){
+  document.getElementById('login-view').style.display = 'block';
+  document.getElementById('register-view').style.display = 'none';
+  document.getElementById('login-error').classList.remove('show');
+  document.getElementById('login-success').classList.remove('show');
+}
+function showRegister(){
+  document.getElementById('login-view').style.display = 'none';
+  document.getElementById('register-view').style.display = 'block';
+  document.getElementById('register-error').classList.remove('show');
+  document.getElementById('register-success').classList.remove('show');
+}
+
+function handleLogin(){
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  const sucEl = document.getElementById('login-success');
+  errEl.classList.remove('show'); sucEl.classList.remove('show');
+
+  if (!username || !password){
+    errEl.textContent = 'Please enter both username and password.';
+    errEl.classList.add('show');
+    return;
+  }
+  const user = findUser(username);
+  if (!user){
+    errEl.textContent = 'User not found. Please check your username.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (user.password !== password){
+    errEl.textContent = 'Incorrect password. Please try again.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (!user.active){
+    errEl.textContent = 'This account has been disabled. Contact admin.';
+    errEl.classList.add('show');
+    return;
+  }
+  // Success
+  sucEl.textContent = 'Login successful! Redirecting…';
+  sucEl.classList.add('show');
+  setSession(user);
+  setTimeout(() => { enterApp(user); }, 600);
+}
+
+function handleRegister(){
+  const username = document.getElementById('reg-username').value.trim();
+  const displayName = document.getElementById('reg-displayname').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const confirm = document.getElementById('reg-confirm').value;
+  const errEl = document.getElementById('register-error');
+  const sucEl = document.getElementById('register-success');
+  errEl.classList.remove('show'); sucEl.classList.remove('show');
+
+  if (!username || !password || !confirm){
+    errEl.textContent = 'Please fill in all required fields.';
+    errEl.classList.add('show'); return;
+  }
+  if (username.length < 3){
+    errEl.textContent = 'Username must be at least 3 characters.';
+    errEl.classList.add('show'); return;
+  }
+  if (!/^[a-zA-Z0-9_.-]+$/.test(username)){
+    errEl.textContent = 'Username may only contain letters, numbers, dots, dashes, and underscores.';
+    errEl.classList.add('show'); return;
+  }
+  if (password.length < 6){
+    errEl.textContent = 'Password must be at least 6 characters.';
+    errEl.classList.add('show'); return;
+  }
+  if (password !== confirm){
+    errEl.textContent = 'Passwords do not match.';
+    errEl.classList.add('show'); return;
+  }
+  if (findUser(username)){
+    errEl.textContent = 'Username already taken. Please choose another.';
+    errEl.classList.add('show'); return;
+  }
+  const newUser = {
+    username: username,
+    password: password,
+    displayName: displayName || username,
+    role: 'user',
+    createdAt: new Date().toISOString(),
+    active: true
+  };
+  users.push(newUser);
+  persistUsers();
+  sucEl.textContent = 'Account created successfully! You can now sign in.';
+  sucEl.classList.add('show');
+  setTimeout(() => { showLogin(); document.getElementById('login-username').value = username; }, 1200);
+}
+
+function handleLogout(){
+  if (!confirm('Are you sure you want to log out?')) return;
+  clearSession();
+  document.getElementById('app-container').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+  showLogin();
+  document.getElementById('login-password').value = '';
+}
+
+function enterApp(user){
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app-container').style.display = 'flex';
+  // Update user info in sidebar
+  document.getElementById('user-avatar').textContent = (user.displayName || user.username).charAt(0).toUpperCase();
+  document.getElementById('user-name-display').textContent = user.displayName || user.username;
+  document.getElementById('user-role-display').textContent = user.role === 'admin' ? 'Administrator' : 'Sub User';
+  // Show/hide admin-only nav item
+  const userMgmtNav = document.getElementById('nav-user-management');
+  if (user.role === 'admin'){
+    userMgmtNav.style.display = 'flex';
+  } else {
+    userMgmtNav.style.display = 'none';
+  }
+  // Load all data now that user is authenticated
+  migrateTemplateData();
+  initDashboard();
+  handleRoute();
+}
+
+/* ============================================================
+   USER MANAGEMENT (ADMIN)
+============================================================ */
+function openUserManagement(){
+  const current = getCurrentUser();
+  if (!current || current.role !== 'admin'){
+    alert('Access denied. Admin only.');
+    return;
+  }
+  openOverlay('usermgmt-overlay');
+  renderUserTable();
+}
+function renderUserTable(){
+  const tbody = document.getElementById('user-table-body');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  const sorted = [...users].sort((a,b) => {
+    if (a.role === 'admin' && b.role !== 'admin') return -1;
+    if (a.role !== 'admin' && b.role === 'admin') return 1;
+    return a.username.localeCompare(b.username);
+  });
+  sorted.forEach(u => {
+    const tr = document.createElement('tr');
+    const created = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
+    const roleClass = u.role === 'admin' ? 'role-admin' : 'role-user';
+    const statusClass = u.active ? 'status-active' : 'status-disabled';
+    const statusText = u.active ? '● Active' : '● Disabled';
+    const isDefaultAdmin = u.username === 'admin';
+    tr.innerHTML = `
+      <td style="font-family:monospace;font-weight:600;">${escapeHtml(u.username)}</td>
+      <td>${escapeHtml(u.displayName || u.username)}</td>
+      <td><span class="role-badge ${roleClass}">${u.role}</span></td>
+      <td><span class="${statusClass}">${statusText}</span></td>
+      <td style="font-size:11px;color:#5a5a7a;">${created}</td>
+      <td>
+        <div class="user-actions">
+          <button class="act-edit" onclick="adminEditUser('${escapeAttr(u.username)}')">Edit</button>
+          ${!isDefaultAdmin ? `<button class="act-toggle" onclick="adminToggleUser('${escapeAttr(u.username)}')">${u.active ? 'Disable' : 'Enable'}</button>` : ''}
+          ${!isDefaultAdmin ? `<button class="act-delete" onclick="adminDeleteUser('${escapeAttr(u.username)}')">Delete</button>` : ''}
+        </div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+  const activeCount = users.filter(u => u.active).length;
+  const adminCount = users.filter(u => u.role === 'admin').length;
+  const el = document.getElementById('usermgmt-status');
+  if (el) el.innerHTML = `<b>${users.length}</b> total users • <b>${activeCount}</b> active • <b>${adminCount}</b> admin(s)`;
+  const badge = document.getElementById('usermgmt-nav-badge');
+  if (badge) badge.textContent = users.length;
+}
+function adminAddUser(){
+  const username = document.getElementById('new-user-username').value.trim();
+  const displayName = document.getElementById('new-user-displayname').value.trim();
+  const password = document.getElementById('new-user-password').value;
+  const role = document.getElementById('new-user-role').value;
+  const errEl = document.getElementById('add-user-error');
+  errEl.style.display = 'none';
+
+  if (!username || !password){
+    errEl.textContent = 'Username and password are required.';
+    errEl.style.display = 'block'; return;
+  }
+  if (username.length < 3){
+    errEl.textContent = 'Username must be at least 3 characters.';
+    errEl.style.display = 'block'; return;
+  }
+  if (!/^[a-zA-Z0-9_.-]+$/.test(username)){
+    errEl.textContent = 'Username may only contain letters, numbers, dots, dashes, underscores.';
+    errEl.style.display = 'block'; return;
+  }
+  if (password.length < 6){
+    errEl.textContent = 'Password must be at least 6 characters.';
+    errEl.style.display = 'block'; return;
+  }
+  if (findUser(username)){
+    errEl.textContent = 'Username already exists.';
+    errEl.style.display = 'block'; return;
+  }
+  users.push({
+    username: username,
+    password: password,
+    displayName: displayName || username,
+    role: role,
+    createdAt: new Date().toISOString(),
+    active: true
+  });
+  persistUsers();
+  document.getElementById('new-user-username').value = '';
+  document.getElementById('new-user-displayname').value = '';
+  document.getElementById('new-user-password').value = '';
+  renderUserTable();
+  alert(`✅ User "${username}" created as ${role}.`);
+}
+function adminEditUser(username){
+  const user = findUser(username);
+  if (!user) return;
+  const newDisplay = prompt(`Display name for "${username}":`, user.displayName || user.username);
+  if (newDisplay === null) return;
+  const newPassword = prompt(`New password for "${username}" (leave blank to keep current):`, '');
+  if (newPassword === null) return;
+  if (newPassword && newPassword.length < 6){
+    alert('Password must be at least 6 characters.');
+    return;
+  }
+  const newRole = confirm(`Make "${username}" an admin?\n\nOK = Admin\nCancel = Keep as ${user.role}`) ? 'admin' : user.role;
+  user.displayName = newDisplay.trim() || user.username;
+  if (newPassword) user.password = newPassword;
+  if (user.username !== 'admin') user.role = newRole;
+  persistUsers();
+  renderUserTable();
+  alert('✅ User updated.');
+}
+function adminToggleUser(username){
+  if (username === 'admin'){ alert('Cannot disable the default admin account.'); return; }
+  const user = findUser(username);
+  if (!user) return;
+  user.active = !user.active;
+  persistUsers();
+  renderUserTable();
+}
+function adminDeleteUser(username){
+  if (username === 'admin'){ alert('Cannot delete the default admin account.'); return; }
+  if (!confirm(`Delete user "${username}"? This cannot be undone.`)) return;
+  users = users.filter(u => u.username !== username);
+  persistUsers();
+  renderUserTable();
+  alert('User deleted.');
+}
+function clearAllUsers(){
+  if (!confirm('Delete all sub-users? The default admin will remain.')) return;
+  users = users.filter(u => u.username === 'admin');
+  persistUsers();
+  renderUserTable();
+}
+function exportUsers(){
+  const data = users.map(u => ({ username: u.username, displayName: u.displayName, role: u.role, active: u.active, createdAt: u.createdAt }));
+  const text = JSON.stringify(data, null, 2);
+  const blob = new Blob([text], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'hub-users.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
 /* ============================================================
    STATE
 ============================================================ */
@@ -551,12 +1035,11 @@ function migrateTemplateData(){
 }
 
 /* ============================================================
-   EMAIL VERIFICATION SUITE — EXTENDED WITH SAVE & COPY
+   EMAIL VERIFICATION SUITE
 ============================================================ */
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+\-']+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 let currentEmailTab = 'roundcube';
 let lastEmailOutputText = '';
-// Storage for saved valid emails per tool
 const SAVED_EMAILS_KEY = 'savedValidEmailsOGParker';
 let savedValidEmails = {};
 
@@ -575,11 +1058,7 @@ function saveEmailResultsForTool(){
     alert('No results to save — run a tool first.');
     return;
   }
-  // Extract only valid email lines (those starting with [VALID] or valid-only content)
   const lines = lastEmailOutputText.split('\n').filter(l => l.trim().length > 0);
-  // For verifier tabs, valid lines contain "[VALID]"
-  // For country/domain sorter, we save the whole output (includes groups)
-  // For cutter, we save the output list
   savedValidEmails[currentEmailTab] = {
     timestamp: new Date().toISOString(),
     content: lastEmailOutputText,
@@ -1856,13 +2335,22 @@ function initDashboard(){
   initNotepad();
   initUploadNotes();
   updateEmailInstructions();
-  // load saved emails for tools (optional, just to init)
   loadSavedEmails();
 }
 
-migrateTemplateData();
-initDashboard();
-handleRoute();
+/* ============================================================
+   BOOTSTRAP — Check session on load
+============================================================ */
+(function bootstrap(){
+  loadUsers();
+  const currentUser = getCurrentUser();
+  if (currentUser){
+    enterApp(currentUser);
+  } else {
+    document.getElementById('auth-screen').style.display = 'flex';
+    document.getElementById('app-container').style.display = 'none';
+  }
+})();
 
 window.addEventListener('beforeunload', () => {
   try { persistExtraUrls(readExtraFromDOM()); } catch(e){}
@@ -1871,6 +2359,7 @@ window.addEventListener('beforeunload', () => {
   try { persistUploadSlots(readUploadFromDOM()); } catch(e){}
   try { persistState(); } catch(e){}
   try { persistSavedEmails(); } catch(e){}
+  try { persistUsers(); } catch(e){}
 });
 </script>
 </body>
